@@ -2,7 +2,11 @@
 
 function updateScore(score){
     let scoreElement = document.getElementById('score');
-    scoreElement.innerHTML = score;
+
+    let newScore = parseInt(scoreElement.getAttribute('value')) + score;
+
+    scoreElement.innerHTML = newScore;
+    scoreElement.setAttribute('value', newScore);
 }
 
 function checkPlay(player, bot){
@@ -25,9 +29,21 @@ function checkPlay(player, bot){
     }
 }
 
-function playGame(){
-    let player;
-    let bot;
+function botChoice(options){
 
+    return options[Math.floor(Math.random() * options.length)];
+
+}
+
+function play(element){
+
+    let options = ['paper', 'rock', 'scissors'];
+
+    let playerOption = element.id;
+    let botOption = botChoice(options);
+
+    console.log(playerOption + " X " + botOption);
+
+    updateScore(checkPlay(playerOption, botOption))
 
 }

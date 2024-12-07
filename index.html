@@ -47,21 +47,23 @@
 
     <div class="score-board mb-5">
         <h2>Score</h2>
-        <p class="display-4" id="score">0</p>
+        <p class="display-4" id="score" value="0">0</p>
     </div>
 
     <h2 class="text-center">Choose your option</h2>
+
     <div class="game-board">
 
-        <div id="rock" class="option">
+        <div id="rock" class="option" onclick="play(this)">
             <img src="/images/rock.png" alt="Rock">
         </div>
-        <div id="paper" class="option">
-            <img src="/images/paper.png" alt="Rock">
+        <div id="paper" class="option" onclick="play(this)">
+            <img src="/images/paper.png" alt="Paper">
         </div>
-        <div id="scissors" class="option">
-            <img src="/images/scissors.png" alt="Rock">
+        <div id="scissors" class="option" onclick="play(this)">
+            <img src="/images/scissors.png" alt="Scissors">
         </div>
+
     </div>
 
     <script src="script.js" ></script>
