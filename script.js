@@ -35,6 +35,19 @@ function botChoice(options){
 
 }
 
+async function removeOption(option){
+    console.log(option)
+    let optionElement = document.getElementById(option);
+    optionElement.classList.add('animate__animated');
+    optionElement.classList.add('animate__backOutLeft');
+}
+
+function wait(time) {
+    return new Promise(resolve => {
+        setTimeout(resolve, time);
+    });
+}
+
 function play(element){
 
     let options = ['paper', 'rock', 'scissors'];
@@ -45,5 +58,11 @@ function play(element){
     console.log(playerOption + " X " + botOption);
 
     updateScore(checkPlay(playerOption, botOption))
+
+    for(i in options){
+        if(options[i] != playerOption){
+            removeOption(options[i]);
+        }
+    }
 
 }
