@@ -35,20 +35,75 @@ function botChoice(options){
 
 }
 
+function moveElement(option){
+    // document.getElementById(option).style.transform = 'translateX(50%)';
+
+}
+
 async function removeOption(option){
     console.log(option)
     let optionElement = document.getElementById(option);
     optionElement.classList.add('animate__animated');
     optionElement.classList.add('animate__backOutLeft');
+    await sleep(4000);
+    optionElement.remove();
+    
 }
 
-function wait(time) {
+function addBotOption(option){
+    let optionElement = document.createElement('div');
+    optionElement.className = 'option';
+    optionElement.id = option;
+    optionElement.classList.add('animate__animated');
+    optionElement.classList.add('animate__backInRight');
+
+
+    let imgElement = document.createElement('img');
+    imgElement.setAttribute('src', `/images/${option}.png`);
+    
+    optionElement.appendChild(imgElement);
+
+    document.getElementById('game-board').appendChild(optionElement);
+}
+
+function addVersusSymbol(){
+
+    let versus = document.createElement('div');
+    versus.className = 'versus';
+    versus.id = 'versus';
+    versus.classList.add('animate__animated');
+    versus.classList.add('animate__backInUp');
+
+    let pElement = document.createElement('p');
+    pElement.className = 'display-4';
+    pElement.textContent = 'X';
+
+    versus.appendChild(pElement);
+
+    document.getElementById('game-board').appendChild(versus);
+
+}
+
+function removeOnClick(options){
+    for (let i = 0; i < options.length; i++) {
+        document.getElementById(options[i]).removeAttribute('onclick');
+    }
+}
+
+function sleep(time) {
     return new Promise(resolve => {
         setTimeout(resolve, time);
     });
 }
 
-function play(element){
+function clearBoard(){
+    let elements = document.querySelectorAll('#game-board > *');
+    for (let i = 0; i < elements.length; i++) {
+        elements[i].remove();
+    }
+}
+
+async function play(element){
 
     let options = ['paper', 'rock', 'scissors'];
 
@@ -57,12 +112,25 @@ function play(element){
 
     console.log(playerOption + " X " + botOption);
 
-    updateScore(checkPlay(playerOption, botOption))
+    removeOnClick(options);
+
+    updateScore(checkPlay(playerOption, botOption));
 
     for(i in options){
         if(options[i] != playerOption){
             removeOption(options[i]);
         }
     }
+
+    moveElement(playerOption);
+
+    addVersusSymbol();
+
+    addBotOption(botOption);
+
+
+    await sleep(5000);
+
+    clearBoard();
 
 }

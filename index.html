@@ -24,7 +24,9 @@
             margin: 20px;
             display: flex;
             justify-content: center;
+            align-items: center;
             padding: 20px;
+            transition: all 1s ease;
         }
 
         .option {
@@ -33,10 +35,22 @@
             border-radius: 20px;
             margin: 20px;
             cursor: pointer;
+            transition: all 1s ease;
         }
 
         #scissors img {
             rotate: -90deg;
+        }
+
+        .versus{
+            text-align: center;
+            padding: 20px;
+            margin: 20px;
+            transition: all 1s ease;
+        }
+        .versus p{
+            margin: 0;
+            padding: 0;
         }
     </style>
 </head>
@@ -52,7 +66,7 @@
 
     <h2 class="text-center">Choose your option</h2>
 
-    <div class="game-board">
+    <div class="game-board" id="game-board">
 
         <div id="rock" class="option" onclick="play(this)">
             <img src="/images/rock.png" alt="Rock">
