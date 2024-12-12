@@ -96,12 +96,24 @@ function sleep(time) {
     });
 }
 
-function clearBoard(){
+async function clearBoard(){
     let elements = document.querySelectorAll('#game-board > *');
+    for (let i = 0; i < elements.length; i++) {
+        
+        elements[i].classList.add('animate__animated');
+        elements[i].classList.add('animate__backOutLeft');
+
+    }
+    
+    await sleep(2000);
+
     for (let i = 0; i < elements.length; i++) {
         elements[i].remove();
     }
 }
+
+
+
 
 async function play(element){
 
@@ -131,6 +143,6 @@ async function play(element){
 
     await sleep(5000);
 
-    clearBoard();
+    await clearBoard();
 
 }
