@@ -112,12 +112,37 @@ async function clearBoard(){
     }
 }
 
+function capitalize(str){
+    return str[0].toUpperCase() + str.slice(1);
+}
 
+function restartBoard(options){
+
+    for (const option of options) {
+        
+        let optionElement = document.createElement('div');
+        optionElement.className = 'option';
+        optionElement.id = option;
+        optionElement.classList.add('animate__animated');
+        optionElement.classList.add('animate__bounceInUp');
+
+        optionElement.setAttribute('alt', capitalize(option));
+        optionElement.setAttribute('onclick', "play(this)");
+    
+        let imgElement = document.createElement('img');
+        imgElement.setAttribute('src', `/images/${option}.png`);
+        
+        optionElement.appendChild(imgElement);
+    
+        document.getElementById('game-board').appendChild(optionElement);
+        
+    }
+}
 
 
 async function play(element){
 
-    let options = ['paper', 'rock', 'scissors'];
+    let options = ['rock', 'paper', 'scissors'];
 
     let playerOption = element.id;
     let botOption = botChoice(options);
@@ -144,5 +169,7 @@ async function play(element){
     await sleep(5000);
 
     await clearBoard();
+
+    restartBoard(options);
 
 }
