@@ -1,6 +1,6 @@
 
 
-function updateScore(score){
+function updateScore(score) {
     let scoreElement = document.getElementById('score');
 
     let newScore = parseInt(scoreElement.getAttribute('value')) + score;
@@ -9,48 +9,87 @@ function updateScore(score){
     scoreElement.setAttribute('value', newScore);
 }
 
-function checkPlay(player, bot){
-    if(player == bot){
-        return 0;
-    }else if(player == "paper" && bot == "rock"){
-        return 1;
-    }else if(player == "paper" && bot == "scissors"){
-        return -1;
-    }else if(player == "rock" && bot == "paper"){
-        return -1;
-    }else if(player == "rock" && bot == "scissors"){
-        return 1;
-    }else if(player == "scissors" && bot == "rock"){
-        return -1;
-    }else if(player == "scissors" && bot == "paper"){
-        return 1;
+function winSound(){
+    playSound('sound/win.mp3');
+}
+
+function drawSound(){
+    playSound('sound/draw.mp3');
+}
+
+function loseSound(){
+    playSound('sound/lose.mp3');
+}
+
+function playSound(url) {
+    const audio = new Audio(url);
+    audio.play();
+}
+
+function resultSound(score){
+    if(score == 1){
+        winSound();
+    }else if(score == 0){
+        drawSound()
     }else{
+        loseSound();
+    }
+}
+
+function checkPlay(player, bot) {
+    if (player == bot) {
+        return 0;
+    } else if (player == "paper" && bot == "rock") {
+        return 1;
+    } else if (player == "paper" && bot == "scissors") {
+        return -1;
+    } else if (player == "rock" && bot == "paper") {
+        return -1;
+    } else if (player == "rock" && bot == "scissors") {
+        return 1;
+    } else if (player == "scissors" && bot == "rock") {
+        return -1;
+    } else if (player == "scissors" && bot == "paper") {
+        return 1;
+    } else {
         return null;
     }
 }
 
-function botChoice(options){
+function botChoice(options) {
 
     return options[Math.floor(Math.random() * options.length)];
 
 }
 
-function moveElement(option){
-    // document.getElementById(option).style.transform = 'translateX(50%)';
+function addPlayerOption(option) {
+    let optionElement = document.createElement('div');
+    optionElement.className = 'option';
+    optionElement.id = option;
+    optionElement.classList.add('animate__animated');
+    optionElement.classList.add('animate__backInLeft');
+
+
+    let imgElement = document.createElement('img');
+    imgElement.setAttribute('src', `/images/${option}.png`);
+
+    optionElement.appendChild(imgElement);
+
+    document.getElementById('game-board').appendChild(optionElement);
 
 }
 
-async function removeOption(option){
+async function removeOption(option) {
     console.log(option)
     let optionElement = document.getElementById(option);
     optionElement.classList.add('animate__animated');
     optionElement.classList.add('animate__backOutLeft');
-    await sleep(4000);
+    await sleep(1000);
     optionElement.remove();
-    
+
 }
 
-function addBotOption(option){
+function addBotOption(option) {
     let optionElement = document.createElement('div');
     optionElement.className = 'option';
     optionElement.id = option;
@@ -60,13 +99,13 @@ function addBotOption(option){
 
     let imgElement = document.createElement('img');
     imgElement.setAttribute('src', `/images/${option}.png`);
-    
+
     optionElement.appendChild(imgElement);
 
     document.getElementById('game-board').appendChild(optionElement);
 }
 
-function addVersusSymbol(){
+function addVersusSymbol() {
 
     let versus = document.createElement('div');
     versus.className = 'versus';
@@ -84,7 +123,7 @@ function addVersusSymbol(){
 
 }
 
-function removeOnClick(options){
+function removeOnClick(options) {
     for (let i = 0; i < options.length; i++) {
         document.getElementById(options[i]).removeAttribute('onclick');
     }
@@ -96,7 +135,7 @@ function sleep(time) {
     });
 }
 
-function removeAnimationClasses(){
+function removeAnimationClasses() {
     let elements = document.querySelectorAll('#game-board > *');
     for (let i = 0; i < elements.length; i++) {
         elements[i].classList.remove('animate__bounceInUp');
@@ -105,7 +144,7 @@ function removeAnimationClasses(){
     }
 }
 
-async function clearBoard(){
+async function clearBoard() {
     let elements = document.querySelectorAll('#game-board > *');
     for (let i = 0; i < elements.length; i++) {
         elements[i].classList.remove('animate__bounceInUp');
@@ -113,7 +152,7 @@ async function clearBoard(){
         elements[i].classList.add('animate__backOutLeft');
 
     }
-    
+
     await sleep(2000);
 
     for (let i = 0; i < elements.length; i++) {
@@ -121,14 +160,14 @@ async function clearBoard(){
     }
 }
 
-function capitalize(str){
+function capitalize(str) {
     return str[0].toUpperCase() + str.slice(1);
 }
 
-function restartBoard(options){
+function restartBoard(options) {
 
     for (const option of options) {
-        
+
         let optionElement = document.createElement('div');
         optionElement.className = 'option';
         optionElement.id = option;
@@ -137,40 +176,44 @@ function restartBoard(options){
 
         optionElement.setAttribute('alt', capitalize(option));
         optionElement.setAttribute('onclick', "play(this)");
-    
+
         let imgElement = document.createElement('img');
         imgElement.setAttribute('src', `/images/${option}.png`);
-        
+
         optionElement.appendChild(imgElement);
-    
+
         document.getElementById('game-board').appendChild(optionElement);
-        
+
     }
+
+    setTimeout(removeAnimationClasses, 1000);
 }
 
 
-async function play(element){
+async function play(element) {
 
     let options = ['rock', 'paper', 'scissors'];
 
     let playerOption = element.id;
     let botOption = botChoice(options);
-    
-    removeAnimationClasses();
 
     console.log(playerOption + " X " + botOption);
 
     removeOnClick(options);
 
-    updateScore(checkPlay(playerOption, botOption));
+    let score = checkPlay(playerOption, botOption)
 
-    for(i in options){
-        if(options[i] != playerOption){
-            removeOption(options[i]);
-        }
+    resultSound(score);
+
+    updateScore(score);
+
+    for (i in options) {
+        removeOption(options[i]);
     }
 
-    moveElement(playerOption);
+    await sleep(1000);
+
+    addPlayerOption(playerOption);
 
     addVersusSymbol();
 
