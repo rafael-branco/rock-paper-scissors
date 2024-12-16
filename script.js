@@ -96,10 +96,19 @@ function sleep(time) {
     });
 }
 
+function removeAnimationClasses(){
+    let elements = document.querySelectorAll('#game-board > *');
+    for (let i = 0; i < elements.length; i++) {
+        elements[i].classList.remove('animate__bounceInUp');
+        elements[i].classList.remove('animate__animated');
+
+    }
+}
+
 async function clearBoard(){
     let elements = document.querySelectorAll('#game-board > *');
     for (let i = 0; i < elements.length; i++) {
-        
+        elements[i].classList.remove('animate__bounceInUp');
         elements[i].classList.add('animate__animated');
         elements[i].classList.add('animate__backOutLeft');
 
@@ -146,6 +155,8 @@ async function play(element){
 
     let playerOption = element.id;
     let botOption = botChoice(options);
+    
+    removeAnimationClasses();
 
     console.log(playerOption + " X " + botOption);
 
